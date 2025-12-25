@@ -5,10 +5,11 @@ Simple Express.js backend API for DevOps CI/CD learning project.
 ## Application Structure
 
 ```
-backend/
-├── app.js           # Main application file
+CICD-PROJECT/
+|src/
+    ├── app.js           # Main application file
+    ├── test.js          # Simple test file
 ├── package.json     # Dependencies and scripts
-├── test.js          # Simple test file
 └── README.md        # This file
 ```
 
