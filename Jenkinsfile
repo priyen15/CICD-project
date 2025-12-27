@@ -17,7 +17,7 @@ pipeline {
         stage('image build') {
             steps {
                 echo 'Building the image'
-                sh 'docker build -t ${DOCKER_IMAGE_FULL_NAME} .'
+                sh 'docker build --pull -t ${DOCKER_IMAGE_FULL_NAME} .'
             }
         }
         
