@@ -51,7 +51,6 @@ pipeline {
         stage('container and image cleanup') {
             steps {
                 echo 'Cleaning up the container and image'
-                sh 'docker rm backend-api-test'
                 sh 'docker rmi -f ${DOCKER_IMAGE_FULL_NAME}'
             }
         }
