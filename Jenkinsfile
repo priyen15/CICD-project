@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY  = "localhost:5000"
+        DOCKER_REGISTRY  = "192.168.49.1:5000"
         DOCKER_IMAGE_NAME = "backend-api"
         DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
         DOCKER_IMAGE_FULL_NAME = "${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
