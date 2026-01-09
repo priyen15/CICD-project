@@ -5,7 +5,11 @@ pipeline {
         DOCKER_IMAGE_NAME = "backend-api"
         DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
         DOCKER_IMAGE_FULL_NAME = "${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        MANIFEST_REPO = "git@github.com:priyen15/CICD-project-k8s.git"
 
+        GITHUB_CREDENTIALS = 'ssh-key'
+        GITHUB_USERNAME = 'priyen15'
+        GITHUB_EMAIL = 'priyenpatel122@gmail.com'
     }
     stages {
         stage('check out') {
@@ -52,6 +56,39 @@ pipeline {
             steps {
                 echo 'Cleaning up the container and image'
                 sh 'docker rmi -f ${DOCKER_IMAGE_FULL_NAME}'
+            }
+        }
+
+        stage('Update Manifest Repo') {
+            steps {
+                echo 'Updating the manifest repository'
+                sshagent(credentials: [${GITHUB_CREDENTIALS}]) {
+                    dir('manifest-repo') {
+                        sh '''
+                            git clone ${MANIFEST_REPO}
+                        '''
+
+                        sh '''
+                            git config user.name "${GITHUB_USERNAME}"
+                            git config user.email "${GITHUB_EMAIL}"
+                        '''
+
+                        script{
+                            // Method 1: Using sed (simple replacement)
+                            sh '''
+                                sed -i 's|image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:.*|image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}|' dev/deployment.yaml
+                            '''
+
+                            // Commit and push
+                            sh '''
+                                git add dev/deployment.yaml
+                                git diff --cached
+                                git commit -m "Deploy ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} to dev" || echo "No changes"
+                                git push origin main
+                            '''
+                        }
+                    }
+                }
             }
         }
     }
