@@ -8,7 +8,7 @@ pipeline {
         DOCKER_IMAGE_FULL_NAME = "${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
         MANIFEST_REPO = "git@github.com:priyen15/CICD-project-k8s.git"
         
-        GITHUB_CREDENTIALS = 'ssh-key'
+        GITHUB_CREDENTIALS = 'ssh_key'
         GITHUB_USERNAME = 'priyen15'
         GITHUB_EMAIL = 'priyenpatel122@gmail.com'
     }
